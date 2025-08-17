@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  dex:
+    image: dexidp/dex:v2.38.0
+    container_name: excalidraw-dex
+    restart: unless-stopped
+    ports:
+      - "5556:5556"
+    volumes:
+      - ./config/dex.config.yml:/etc/dex/config.yml
+      - dex-data:/var/lib/dex
+    environment:
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
+      - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:-excalidraw-secret}
+    networks:
+      - dex-network
+
+volumes:
+  dex-data:
+
+networks:
+  dex-network:
+    driver: bridge
