@@ -2,6 +2,8 @@ package auth
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"excalidraw-complete/core"
 	"fmt"
 	"net/http"
@@ -68,7 +70,27 @@ func HandleOIDCLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	url := oidcOauthConfig.AuthCodeURL("random", oauth2.AccessTypeOffline)
+	// Generate random state
+	stateBytes := make([]byte, 16)
+	_, err := rand.Read(stateBytes)
+	if err != nil {
+		http.Error(w, "Failed to generate state for OIDC login", http.StatusInternalServerError)
+		return
+	}
+	state := hex.EncodeToString(stateBytes)
+
+	// Set state in a cookie
+	http.SetCookie(w, &http.Cookie{
+		Name:     "oidc_state",
+		Value:    state,
+		Path:     "/",
+		Expires:  time.Now().Add(10 * time.Minute), // 10 minutes expiry
+		HttpOnly: true,
+		Secure:   r.Header.Get("X-Forwarded-Proto") == "https",
+		SameSite: http.SameSiteLaxMode,
+	})
+
+	url := oidcOauthConfig.AuthCodeURL(state, oauth2.AccessTypeOffline)
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
@@ -77,6 +99,29 @@ func HandleOIDCCallback(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "OIDC is not configured", http.StatusInternalServerError)
 		return
 	}
+
+	// Verify state cookie
+	stateCookie, err := r.Cookie("oidc_state")
+	if err != nil {
+		http.Error(w, "State cookie not found", http.StatusBadRequest)
+		return
+	}
+
+	if r.URL.Query().Get("state") != stateCookie.Value {
+		http.Error(w, "Invalid state", http.StatusBadRequest)
+		return
+	}
+
+	// Clear state cookie
+	http.SetCookie(w, &http.Cookie{
+		Name:     "oidc_state",
+		Value:    "",
+		Path:     "/",
+		Expires:  time.Unix(0, 0),
+		HttpOnly: true,
+		Secure:   r.Header.Get("X-Forwarded-Proto") == "https",
+		SameSite: http.SameSiteLaxMode,
+	})
 
 	code := r.FormValue("code")
 	if code == "" {
