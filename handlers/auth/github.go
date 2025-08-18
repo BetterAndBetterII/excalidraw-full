@@ -23,7 +23,6 @@ var (
 	jwtSecret         []byte
 )
 
-const oauthStateString = "random"
 
 // AppClaims represents the custom claims for the JWT.
 type AppClaims struct {
@@ -124,10 +123,9 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// For now we don't have a user database, so we create a user object on the fly.
-	// In phase 3, we will save/get the user from the database here.
+	// Create user object using Subject instead of GitHubID
 	user := &core.User{
-		GitHubID:  githubUser.ID,
+		Subject:   fmt.Sprintf("github:%d", githubUser.ID),
 		Login:     githubUser.Login,
 		AvatarURL: githubUser.AvatarURL,
 		Name:      githubUser.Name,
@@ -147,7 +145,7 @@ func HandleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 func createJWT(user *core.User) (string, error) {
 	claims := AppClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			Subject:   fmt.Sprintf("%d", user.GitHubID),
+			Subject:   user.Subject,
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 7)), // 1 week
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},

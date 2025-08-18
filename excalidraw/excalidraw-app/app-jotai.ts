@@ -3,9 +3,10 @@ import { jotaiStore } from "../packages/excalidraw/jotai";
 import { StorageType } from "./components/StorageSettingsDialog";
 
 export type User = {
-  id: number;
-  githubId: number;
+  id: string;
+  subject: string;
   login: string;
+  email?: string;
   name: string;
   avatarUrl: string;
 };

@@ -452,7 +452,7 @@ const ExcalidrawWrapper = () => {
         if (lastSaveTime) {
           statusMessage = `已保存于 ${lastSaveTime.toLocaleTimeString()}`;
         } else {
-          statusMessage = "已保存";
+          statusMessage = "保存过程出现问题，请稍后再试";
         }
       } else if (saveStatus === "unsaved") {
         statusMessage = "存在未保存的更改";
@@ -507,9 +507,10 @@ const ExcalidrawWrapper = () => {
         const decodedToken: any = jwtDecode(storedToken);
         if (decodedToken.exp * 1000 > Date.now()) {
           setUser({
-            id: decodedToken.userId,
-            githubId: decodedToken.githubId,
+            id: decodedToken.sub,
+            subject: decodedToken.sub,
             login: decodedToken.login,
+            email: decodedToken.email,
             avatarUrl: decodedToken.avatarUrl,
             name: decodedToken.name,
           });
@@ -697,6 +698,7 @@ const ExcalidrawWrapper = () => {
     };
 
     loadCanvas();
+    refreshCanvases();
 
     const onHashChange = async (event: HashChangeEvent) => {
       event.preventDefault();
@@ -832,6 +834,7 @@ const ExcalidrawWrapper = () => {
     setCurrentCanvasId,
     setErrorMessage,
     resetSaveStatus,
+    refreshCanvases,
   ]);
 
   useEffect(() => {

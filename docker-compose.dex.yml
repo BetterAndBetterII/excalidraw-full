@@ -8,20 +8,30 @@ services:
     ports:
       - "5556:5556"
     volumes:
-      - ./config/dex.config.yml:/etc/dex/config.yml
-      - dex-data:/var/lib/dex
+      - ./config/dex.config.yaml:/etc/dex/config.yaml
     environment:
-      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
-      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
-      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
-      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
+      - OIDC_REDIRECT_URL=${OIDC_REDIRECT_URL:-http://localhost:3000/auth/oidc/callback}
       - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:-excalidraw-secret}
+      - OIDC_CLIENT_ID=${OIDC_CLIENT_ID:-excalidraw}
+      - OIDC_ISSUER=${OIDC_ISSUER:-http://localhost:5556}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH:-your_secure_password}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
+      - ADMIN_USER_ID=${ADMIN_USER_ID:-'admin1234'}
+    command: ["dex", "serve", "/etc/dex/config.yaml"]
     networks:
       - dex-network
 
-volumes:
-  dex-data:
+  excalidraw:
+    build:
+      context: .
+      dockerfile: excalidraw-complete.Dockerfile
+    ports:
+      - "3003:3002"
+    volumes:
+      - ./data:/root/data
+      - ./excalidraw.db:/root/excalidraw.db:Z
+      - ./.env:/root/.env
 
 networks:
   dex-network:

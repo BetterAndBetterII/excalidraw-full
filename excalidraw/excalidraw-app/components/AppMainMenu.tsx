@@ -22,7 +22,7 @@ export const AppMainMenu: React.FC<{
   const setSaveAsDialog = useSetAtom(saveAsDialogAtom);
 
   const handleLogin = () => {
-    window.location.href = "/auth/github/login";
+    window.location.href = "/auth/oidc/login";
   };
 
   const handleLogout = () => {
@@ -127,7 +127,7 @@ export const AppMainMenu: React.FC<{
         </div>
       ) : (
         <MainMenu.Item onSelect={handleLogin} icon={GithubIcon}>
-          Login with GitHub
+          Login
         </MainMenu.Item>
       )}
       <MainMenu.Separator />

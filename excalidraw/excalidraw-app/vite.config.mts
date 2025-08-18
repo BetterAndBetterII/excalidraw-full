@@ -15,11 +15,11 @@ export default defineConfig({
     open: true,
     proxy: {
       "/api": {
-        target: "http://localhost:3002",
+        target: "http://localhost:3003",
         changeOrigin: true,
       },
       "/auth": {
-        target: "http://localhost:3002",
+        target: "http://localhost:3003",
         changeOrigin: true,
       },
     },
@@ -76,7 +76,10 @@ export default defineConfig({
       workbox: {
         // Don't push fonts and locales to app precache
         globIgnores: ["fonts.css", "**/locales/**", "service-worker.js"],
-        navigateFallbackDenylist: [/^\/api/, /^\/auth/],
+        navigateFallbackDenylist: [
+          /^\/api/,
+          /^\/auth/,
+        ],
         runtimeCaching: [
           {
             urlPattern: new RegExp("/.+.(ttf|woff2|otf)"),

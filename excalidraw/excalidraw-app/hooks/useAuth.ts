@@ -20,9 +20,10 @@ export const useAuth = (setUser: (user: User | null) => void) => {
         // Check if token is expired.
         if (decodedToken.exp * 1000 > Date.now()) {
           setUser({
-            id: decodedToken.userId,
-            githubId: decodedToken.githubId,
+            id: decodedToken.sub,
+            subject: decodedToken.sub,
             login: decodedToken.login,
+            email: decodedToken.email,
             avatarUrl: decodedToken.avatarUrl,
             name: decodedToken.name,
           });

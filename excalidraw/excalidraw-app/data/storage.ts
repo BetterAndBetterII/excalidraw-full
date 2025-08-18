@@ -14,7 +14,6 @@ export interface CanvasMetadata {
   name: string;
   createdAt: string;
   updatedAt: string;
-  userId: number;
   thumbnail?: string;
 }
 

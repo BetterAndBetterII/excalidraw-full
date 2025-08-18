@@ -6,7 +6,6 @@ import {
   IStorageAdapter,
 } from "../storage";
 import { nanoid } from "nanoid";
-import { jwtDecode } from "jwt-decode";
 import { generateThumbnail } from "../thumbnail";
 
 export class AuthError extends Error {
@@ -17,28 +16,6 @@ export class AuthError extends Error {
 }
 
 const API_BASE_URL = "/api/v2/kv";
-
-interface AppJwtPayload {
-  sub: string;
-}
-
-// The backend uses the GitHub user ID as the subject in the JWT.
-// We can decode the token to get this ID for frontend purposes.
-function getUserIdFromJwt(token: string): number | null {
-  try {
-    const decodedToken = jwtDecode<AppJwtPayload>(token);
-    if (decodedToken && decodedToken.sub) {
-      const userId = parseInt(decodedToken.sub, 10);
-      if (!isNaN(userId) && Number.isInteger(userId)) {
-        return userId;
-      }
-    }
-    return null;
-  } catch (e) {
-    console.error("Failed to decode JWT", e);
-    return null;
-  }
-}
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -123,10 +100,6 @@ export class BackendStorageAdapter implements IStorageAdapter {
     if (!token) {
       throw new Error("Authentication token not found.");
     }
-    const userId = getUserIdFromJwt(token);
-    if (!userId) {
-      throw new Error("Could not parse user ID from token.");
-    }
     const thumbnail = await generateThumbnail(
       data.elements,
       data.appState,
@@ -143,7 +116,6 @@ export class BackendStorageAdapter implements IStorageAdapter {
       name: data.appState?.name || "Untitled",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      userId,
       thumbnail: dataWithThumbnail.thumbnail,
     };
   }

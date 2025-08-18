@@ -1,0 +1,28 @@
+issuer: http://localhost:5556
+
+storage:
+  type: memory
+
+web:
+  http: 0.0.0.0:5556
+  allowedOrigins: ["*"]
+
+logger:
+  level: debug
+  format: text
+
+enablePasswordDB: true
+
+staticClients:
+  - id: excalidraw
+    redirectURIs:
+      - {{ .Env.OIDC_REDIRECT_URL }}
+    name: Excalidraw
+    public: true
+    secret: excalidraw-secret
+
+staticPasswords:
+  - email: {{ .Env.ADMIN_EMAIL }}
+    hash: {{ .Env.ADMIN_PASSWORD_HASH }}
+    username: {{ .Env.ADMIN_USERNAME }}
+    userID: {{ .Env.ADMIN_USER_ID }}
