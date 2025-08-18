@@ -9,7 +9,6 @@ import {
   extraToolsIcon,
 } from "../../packages/excalidraw/components/icons";
 import DropdownMenuItemLink from "../../packages/excalidraw/components/dropdownMenu/DropdownMenuItemLink";
-import { useI18n } from "../../packages/excalidraw/i18n";
 
 export const AppMainMenu: React.FC<{
   onCollabDialogOpen: () => any;
@@ -18,7 +17,6 @@ export const AppMainMenu: React.FC<{
   onStorageSettingsClick: () => void;
 }> = React.memo((props) => {
   const [user, setUser] = useAtom(userAtom);
-  const { t } = useI18n();
   const setSaveAsDialog = useSetAtom(saveAsDialogAtom);
 
   const handleLogin = () => {
@@ -80,16 +78,18 @@ export const AppMainMenu: React.FC<{
               flexShrink: 1,
             }}
           >
-            <img
-              src={user.avatarUrl}
-              alt={user.login}
-              style={{
-                width: "24px",
-                height: "24px",
-                borderRadius: "50%",
-                flexShrink: 0,
-              }}
-            />
+            {user.avatarUrl && (
+              <img
+                src={user.avatarUrl}
+                alt={user.login}
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  borderRadius: "50%",
+                  flexShrink: 0,
+                }}
+              />
+            )}
             <span
               style={{
                 whiteSpace: "nowrap",

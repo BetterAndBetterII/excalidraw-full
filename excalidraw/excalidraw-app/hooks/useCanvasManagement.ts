@@ -3,19 +3,17 @@ import { useAtom } from "jotai";
 import { IStorageAdapter, CanvasMetadata, CanvasData } from "../data/storage";
 import { AuthError } from "../data/storageAdapters/BackendStorageAdapter";
 import { ExcalidrawImperativeAPI } from "../../packages/excalidraw/types";
-import { User, currentCanvasIdAtom } from "../app-jotai";
+import { currentCanvasIdAtom } from "../app-jotai";
 import { CREATIONS_SIDEBAR_NAME } from "../app_constants";
 
 export const useCanvasManagement = ({
   storageAdapter,
   excalidrawAPI,
-  user,
   setErrorMessage,
   resetSaveStatus,
 }: {
   storageAdapter: IStorageAdapter;
   excalidrawAPI: ExcalidrawImperativeAPI | null | undefined;
-  user: User | null;
   setErrorMessage: (msg: string) => void;
   resetSaveStatus: () => void;
 }) => {

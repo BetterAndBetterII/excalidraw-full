@@ -406,7 +406,6 @@ const ExcalidrawWrapper = () => {
   } = useCanvasManagement({
     storageAdapter,
     excalidrawAPI,
-    user,
     setErrorMessage,
     resetSaveStatus,
   });
