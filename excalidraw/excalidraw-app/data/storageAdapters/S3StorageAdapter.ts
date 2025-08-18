@@ -134,7 +134,6 @@ export class S3StorageAdapter implements IStorageAdapter {
       name: data.appState.name || "Untitled Canvas",
       createdAt: now,
       updatedAt: now,
-      userId: 0,
       thumbnail: data.elements.length > 0 ? thumbnail : undefined,
     };
 

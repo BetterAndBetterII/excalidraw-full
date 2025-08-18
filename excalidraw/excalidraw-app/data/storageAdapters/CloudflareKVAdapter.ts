@@ -146,7 +146,6 @@ export class CloudflareKVAdapter implements IStorageAdapter {
       createdAt: now,
       updatedAt: now,
       // Assuming userId comes from a context, hardcoding for now
-      userId: 0,
       thumbnail: data.elements.length > 0 ? thumbnail : undefined,
     };
 

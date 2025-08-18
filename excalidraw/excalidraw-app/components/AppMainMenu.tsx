@@ -20,7 +20,7 @@ export const AppMainMenu: React.FC<{
   const setSaveAsDialog = useSetAtom(saveAsDialogAtom);
 
   const handleLogin = () => {
-    window.location.href = "/auth/oidc/login";
+    window.location.href = "/auth/login";
   };
 
   const handleLogout = () => {

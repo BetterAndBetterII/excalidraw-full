@@ -63,7 +63,7 @@ docker compose up -d
 
 - `GITHUB_CLIENT_ID`: 您的 GitHub OAuth App 的 Client ID。
 - `GITHUB_CLIENT_SECRET`: 您的 GitHub OAuth App 的 Client Secret。
-- `GITHUB_REDIRECT_URL`: 回调 URL。对于本地测试，这是 `http://localhost:3002/auth/github/callback`。
+- `GITHUB_REDIRECT_URL`: 回调 URL。对于本地测试，这是 `http://localhost:3002/auth/callback`。
 - `JWT_SECRET`: 用于签署会话令牌的强随机字符串。使用 `openssl rand -base64 32` 生成一个。
 - `OPENAI_API_KEY`: 您在 OpenAI 的秘密密钥。
 - `OPENAI_BASE_URL`: (可选) 用于使用兼容的 API，如 Azure OpenAI。
@@ -97,7 +97,7 @@ docker compose up -d
 # 从 https://github.com/settings/developers 获取
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
-GITHUB_REDIRECT_URL=http://localhost:3002/auth/github/callback
+GITHUB_REDIRECT_URL=http://localhost:3002/auth/callback
 
 # 使用以下命令生成: openssl rand -base64 32
 JWT_SECRET=your_super_secret_jwt_string
@@ -129,7 +129,7 @@ docker build -t excalidraw-complete -f excalidraw-complete.Dockerfile .
 docker run -p 3002:3002 \
   -e GITHUB_CLIENT_ID="your_id" \
   -e GITHUB_CLIENT_SECRET="your_secret" \
-  -e GITHUB_REDIRECT_URL="http://localhost:3002/auth/github/callback" \
+  -e GITHUB_REDIRECT_URL="http://localhost:3002/auth/callback" \
   -e JWT_SECRET="your_jwt_secret" \
   -e STORAGE_TYPE="sqlite" \
   -e DATA_SOURCE_NAME="excalidraw.db" \

@@ -5,7 +5,7 @@ services:
     image: busybox:latest
     ports:
       - "5556:5556"  # Dex
-      - "3002:3002"  # Excalidraw
+      - "3004:3002"  # Excalidraw
     command: ["sleep", "infinity"]
     networks:
       - excalidraw-network
@@ -17,7 +17,7 @@ services:
     volumes:
       - ./config/dex.config.yaml:/etc/dex/config.yaml
     environment:
-      - OIDC_REDIRECT_URL=${OIDC_REDIRECT_URL:-http://localhost:3002/auth/oidc/callback}
+      - OIDC_REDIRECT_URL=${OIDC_REDIRECT_URL:-http://localhost:3002/auth/callback}
       - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:-excalidraw-secret}
       - OIDC_CLIENT_ID=${OIDC_CLIENT_ID:-excalidraw}
       - OIDC_ISSUER=${OIDC_ISSUER:-http://localhost:5556}

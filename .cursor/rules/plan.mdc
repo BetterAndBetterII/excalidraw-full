@@ -19,8 +19,8 @@ alwaysApply: true
 - [x] **1.1.1**: 在 `go.mod` 中添加 `golang.org/x/oauth2` 依赖。
 - [x] **1.1.2**: 创建新的 HTTP 处理器用于处理 OAuth2 流程。
 - [x] **1.1.3**: 在 `main.go` 中添加认证路由:
-    - [x] `GET /auth/github/login`
-    - [x] `GET /auth/github/callback`
+    - [x] `GET /auth/login`
+    - [x] `GET /auth/callback`
 - [x] **1.1.4**: 实现从 GitHub API 获取用户信息的逻辑。
 - [x] **1.1.5**: 引入 JWT 库 (e.g., `github.com/golang-jwt/jwt/v5`)。
 - [x] **1.1.6**: 实现用户登录成功后生成和颁发 JWT 的逻辑。
@@ -29,7 +29,7 @@ alwaysApply: true
 
 ### 前端 (React)
 - [x] **1.2.1**: 在 UI 中AppWelcomeScreen中添加"使用 GitHub 登录"按钮。在excalidraw\excalidraw-app\components\AppMainMenu.tsx中添加"登录"按钮。
-- [x] **1.2.2**: 添加api层，实现点击按钮后跳转到后端 `/auth/github/login` 的逻辑。
+- [x] **1.2.2**: 添加api层，实现点击按钮后跳转到后端 `/auth/login` 的逻辑。
 - [x] **1.2.3**: 创建一个用于处理登录回调的组件/页面，能从 URL 中解析出 JWT。
 - [x] **1.2.4**: 将获取到的 JWT 安全地存储在 `localStorage` 或 `sessionStorage` 中。
 - [x] **1.2.5**: 创建一个全局 API 请求封装（如 Axios 拦截器），为所有请求自动附加 `Authorization` 头。
