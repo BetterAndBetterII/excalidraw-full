@@ -40,6 +40,7 @@ var (
 type AppClaims struct {
 	jwt.RegisteredClaims
 	Login     string `json:"login"`
+	Email     string `json:"email,omitempty"`
 	AvatarURL string `json:"avatarUrl"`
 	Name      string `json:"name"`
 }
