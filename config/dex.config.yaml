@@ -1,4 +1,4 @@
-issuer: http://localhost:5556
+issuer: {{ .Env.OIDC_ISSUER }}
 
 storage:
   type: memory

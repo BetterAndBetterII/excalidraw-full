@@ -1,16 +1,23 @@
 version: '3.8'
 
 services:
+  netpod:
+    image: busybox:latest
+    ports:
+      - "5556:5556"  # Dex
+      - "3002:3002"  # Excalidraw
+    command: ["sleep", "infinity"]
+    networks:
+      - excalidraw-network
+
   dex:
     image: dexidp/dex:v2.38.0
     container_name: excalidraw-dex
     restart: unless-stopped
-    ports:
-      - "5556:5556"
     volumes:
       - ./config/dex.config.yaml:/etc/dex/config.yaml
     environment:
-      - OIDC_REDIRECT_URL=${OIDC_REDIRECT_URL:-http://localhost:3000/auth/oidc/callback}
+      - OIDC_REDIRECT_URL=${OIDC_REDIRECT_URL:-http://localhost:3002/auth/oidc/callback}
       - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET:-excalidraw-secret}
       - OIDC_CLIENT_ID=${OIDC_CLIENT_ID:-excalidraw}
       - OIDC_ISSUER=${OIDC_ISSUER:-http://localhost:5556}
@@ -19,20 +26,25 @@ services:
       - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
       - ADMIN_USER_ID=${ADMIN_USER_ID:-'admin1234'}
     command: ["dex", "serve", "/etc/dex/config.yaml"]
-    networks:
-      - dex-network
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:5556/.well-known/openid-configuration"]
+      interval: 1s
+      timeout: 1s
+      retries: 10
+      start_period: 10s
+    network_mode: service:netpod
 
   excalidraw:
-    build:
-      context: .
-      dockerfile: excalidraw-complete.Dockerfile
-    ports:
-      - "3003:3002"
+    image: ghcr.io/betterandbetterii/excalidraw-full:dex-oidc
     volumes:
       - ./data:/root/data
       - ./excalidraw.db:/root/excalidraw.db:Z
       - ./.env:/root/.env
+    depends_on:
+      dex:
+        condition: service_healthy
+    network_mode: service:netpod
 
 networks:
-  dex-network:
+  excalidraw-network:
     driver: bridge
