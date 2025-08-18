@@ -81,7 +81,7 @@ import { appJotaiStore } from "../app-jotai";
 import { Mutable, ValueOf } from "../../packages/excalidraw/utility-types";
 import { getVisibleSceneBounds } from "../../packages/excalidraw/element/bounds";
 import { withBatchedUpdates } from "../../packages/excalidraw/reactUtils";
-import { collabErrorIndicatorAtom } from "./CollabError"; 
+import { collabErrorIndicatorAtom } from "./CollabError";
 
 export const collabAPIAtom = atom<CollabAPI | null>(null);
 export const isCollaboratingAtom = atom(false);
@@ -953,7 +953,10 @@ class Collab extends PureComponent<CollabProps, CollabState> {
   };
 
   resetErrorIndicator = (resetDialogNotifiedErrors = false) => {
-    appJotaiStore.set(collabErrorIndicatorAtom, { message: null, nonce: 0 } as any);
+    appJotaiStore.set(collabErrorIndicatorAtom, {
+      message: null,
+      nonce: 0,
+    } as any);
     if (resetDialogNotifiedErrors) {
       this.setState({
         dialogNotifiedErrors: {},

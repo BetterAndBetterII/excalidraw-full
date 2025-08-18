@@ -1,10 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useAtom } from "jotai";
-import {
-  IStorageAdapter,
-  CanvasMetadata,
-  CanvasData,
-} from "../data/storage";
+import { IStorageAdapter, CanvasMetadata, CanvasData } from "../data/storage";
 import { AuthError } from "../data/storageAdapters/BackendStorageAdapter";
 import { ExcalidrawImperativeAPI } from "../../packages/excalidraw/types";
 import { User, currentCanvasIdAtom } from "../app-jotai";
@@ -73,7 +69,13 @@ export const useCanvasManagement = ({
         setErrorMessage("Could not load the canvas.");
       }
     },
-    [storageAdapter, excalidrawAPI, setErrorMessage, setCurrentCanvasId, resetSaveStatus],
+    [
+      storageAdapter,
+      excalidrawAPI,
+      setErrorMessage,
+      setCurrentCanvasId,
+      resetSaveStatus,
+    ],
   );
 
   const handleCanvasDelete = useCallback(
@@ -215,4 +217,4 @@ export const useCanvasManagement = ({
     handleCanvasSaveAs,
     refreshCanvases,
   };
-}; 
+};

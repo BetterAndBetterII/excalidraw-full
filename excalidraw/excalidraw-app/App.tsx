@@ -672,17 +672,16 @@ const ExcalidrawWrapper = () => {
               // it will enter the `if (!currentCanvasId)` block and create a new canvas.
               // So we should just return.
               return;
-            } else {
-              // User cancelled. The app is in a broken state.
-              // We can't load the canvas. We should probably show an error.
-              // A simple error message might be enough.
-              const errorMessage = "无法加载指定的画布。";
-              setErrorMessage(errorMessage);
-              initialStatePromiseRef.current.promise.resolve({
-                appState: { errorMessage },
-              });
-              return;
             }
+            // User cancelled. The app is in a broken state.
+            // We can't load the canvas. We should probably show an error.
+            // A simple error message might be enough.
+            const errorMessage = "无法加载指定的画布。";
+            setErrorMessage(errorMessage);
+            initialStatePromiseRef.current.promise.resolve({
+              appState: { errorMessage },
+            });
+            return;
           }
         }
         if (data) {

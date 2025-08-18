@@ -38,4 +38,4 @@ export const useAuth = (setUser: (user: User | null) => void) => {
       }
     }
   }, [setUser]);
-}; 
+};
