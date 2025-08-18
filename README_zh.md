@@ -73,7 +73,7 @@ docker compose -f docker-compose.dex.yml up -d
 # 生成密码哈希
 echo YOUR_NEW_PASSWORD | htpasswd -BinC 10 admin | cut -d: -f2 > .htpasswd
 # 更新 .env 文件
-sed -i 's/ADMIN_PASSWORD_HASH=.*/ADMIN_PASSWORD_HASH=$(cat .htpasswd)/' .env
+sed -i "s|ADMIN_PASSWORD_HASH=.*|ADMIN_PASSWORD_HASH='$(cat .htpasswd)'|" .env
 ```
 
 </details>

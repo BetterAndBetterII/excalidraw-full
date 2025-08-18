@@ -74,7 +74,7 @@ Change your password in `.env` file.
 # Generate the password hash
 echo YOUR_NEW_PASSWORD | htpasswd -BinC 10 admin | cut -d: -f2 > .htpasswd
 # Update your .env file
-sed -i 's/ADMIN_PASSWORD_HASH=.*/ADMIN_PASSWORD_HASH=$(cat .htpasswd)/' .env
+sed -i "s|ADMIN_PASSWORD_HASH=.*|ADMIN_PASSWORD_HASH='$(cat .htpasswd)'|" .env
 ```
 
 </details>
