@@ -5,7 +5,7 @@ services:
     image: busybox:latest
     ports:
       - "5556:5556"  # Dex
-      - "3004:3002"  # Excalidraw
+      - "3002:3002"  # Excalidraw
     command: ["sleep", "infinity"]
     networks:
       - excalidraw-network
@@ -35,7 +35,7 @@ services:
     network_mode: service:netpod
 
   excalidraw:
-    image: ghcr.io/betterandbetterii/excalidraw-full:dex-oidc
+    image: ghcr.io/betterandbetterii/excalidraw-full:main
     volumes:
       - ./data:/root/data
       - ./excalidraw.db:/root/excalidraw.db:Z

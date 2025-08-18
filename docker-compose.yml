@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   excalidraw:
-    image: ghcr.io/betterandbetterii/excalidraw-full:latest
+    image: ghcr.io/betterandbetterii/excalidraw-full:main
     ports:
       - "3002:3002"
     volumes:
