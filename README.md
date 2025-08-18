@@ -53,6 +53,33 @@ docker compose up -d
 
 The server will start, and you can access the application at `http://localhost:3002`.
 
+
+<!-- Summary Folded -->
+<details>
+<summary>Use Simple Password Authentication(Dex OIDC)</summary>
+
+```bash
+# Example for Linux
+git clone https://github.com/BetterAndBetterII/excalidraw-full.git
+cd excalidraw-full
+mv .env.example .env
+touch ./excalidraw.db  # IMPORTANT: Initialize the SQLite DB, OTHERWISE IT WILL NOT START
+docker compose -f docker-compose.dex.yml up -d
+```
+
+Change your password in `.env` file.
+
+```bash
+# apt install apache2-utils
+# Generate the password hash
+echo YOUR_NEW_PASSWORD | htpasswd -BinC 10 admin | cut -d: -f2 > .htpasswd
+# Update your .env file
+sed -i 's/ADMIN_PASSWORD_HASH=.*/ADMIN_PASSWORD_HASH=$(cat .htpasswd)/' .env
+```
+
+</details>
+
+
 ## Configuration
 
 Configuration is managed via environment variables. For a full template, see the `.env.example` section below.

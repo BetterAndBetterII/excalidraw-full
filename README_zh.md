@@ -53,6 +53,32 @@ docker compose up -d
 
 服务器将启动，您可以在 `http://localhost:3002` 访问该应用。
 
+<!-- Summary Folded -->
+<details>
+<summary>使用简单密码认证(Dex OIDC)</summary>
+
+```bash
+# 示例
+git clone https://github.com/BetterAndBetterII/excalidraw-full.git
+cd excalidraw-full
+mv .env.example .env
+touch ./excalidraw.db  # 重要：初始化 SQLite 数据库，否则无法启动
+docker compose -f docker-compose.dex.yml up -d
+```
+
+修改 `.env` 文件中的密码。
+
+```bash
+# apt install apache2-utils
+# 生成密码哈希
+echo YOUR_NEW_PASSWORD | htpasswd -BinC 10 admin | cut -d: -f2 > .htpasswd
+# 更新 .env 文件
+sed -i 's/ADMIN_PASSWORD_HASH=.*/ADMIN_PASSWORD_HASH=$(cat .htpasswd)/' .env
+```
+
+</details>
+
+
 ## 配置
 
 配置通过环境变量进行管理。有关完整模板，请参阅下面的 `.env.example` 部分。
